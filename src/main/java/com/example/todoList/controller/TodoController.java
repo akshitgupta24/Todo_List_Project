@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -20,5 +21,13 @@ public class TodoController {
         List<Todo> todoList = todoService.getByUserName("Akshit");
         model.addAttribute("todoList",todoList);
         return "listTodos";
+    }
+
+    @RequestMapping(value = "/addTodo")
+    public String addTodo(ModelMap model){
+        String username = (String)model.get("name");
+        Todo todo = new Todo(0, username, "Default Desc", LocalDate.now().plusYears(1), false);
+        model.put("todo", todo);
+        return "addTodo";
     }
 }
