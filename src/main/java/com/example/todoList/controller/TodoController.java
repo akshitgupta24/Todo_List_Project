@@ -32,7 +32,7 @@ public class TodoController {
     @RequestMapping(value = "/addTodo", method = RequestMethod.GET)
     public String showNewTodo(ModelMap model){
         String username = (String)model.get("name");
-        Todo todo = new Todo(0, username, "", LocalDate.now().plusYears(1), false);
+        Todo todo = new Todo(0, username, "", LocalDate.now(), false);
         model.put("todo", todo);
         return "addTodo";
     }
@@ -44,7 +44,7 @@ public class TodoController {
         }
 
         String username = (String) model.get("name");
-        todoService.addTodo(username, todo.getDescription(),LocalDate.now().plusDays(10), false);
+        todoService.addTodo(username, todo.getDescription(),todo.getTargetDate(), false);
         return "redirect:listTodos";
     }
 
@@ -71,6 +71,11 @@ public class TodoController {
         todo.setUsername(username);
         todoService.updateTodo(todo);
         return "redirect:listTodos";
+    }
+
+    @RequestMapping(value = "/logout")
+    public String logout(){
+        return "login";
     }
 
 

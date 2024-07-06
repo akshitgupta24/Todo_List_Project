@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ include file="common/header.jspf" %>
+<%@ include file="common/navigation.jspf" %>
 <html>
 <head>
     <link href="webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" >
