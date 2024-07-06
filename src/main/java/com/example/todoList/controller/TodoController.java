@@ -4,6 +4,8 @@ import com.example.todoList.service.TodoService;
 import com.example.todoList.todo.Todo;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class TodoController {
@@ -24,14 +25,15 @@ public class TodoController {
 
     @RequestMapping(value = "/listTodos")
     public String listOfTodos(ModelMap model){
-        List<Todo> todoList = todoService.getByUserName("Akshit");
+        String username = getLoggedInUserName(model);
+        List<Todo> todoList = todoService.getByUserName(username);
         model.addAttribute("todoList",todoList);
         return "listTodos";
     }
 
     @RequestMapping(value = "/addTodo", method = RequestMethod.GET)
     public String showNewTodo(ModelMap model){
-        String username = (String)model.get("name");
+        String username = getLoggedInUserName(model);
         Todo todo = new Todo(0, username, "", LocalDate.now(), false);
         model.put("todo", todo);
         return "addTodo";
@@ -43,7 +45,7 @@ public class TodoController {
             return "addTodo";
         }
 
-        String username = (String) model.get("name");
+        String username = getLoggedInUserName(model);
         todoService.addTodo(username, todo.getDescription(),todo.getTargetDate(), false);
         return "redirect:listTodos";
     }
@@ -67,7 +69,7 @@ public class TodoController {
         if(bindingResult.hasErrors()){
             return "addTodo";
         }
-        String username = (String)modelMap.get("name");
+        String username = getLoggedInUserName(modelMap);
         todo.setUsername(username);
         todoService.updateTodo(todo);
         return "redirect:listTodos";
@@ -76,6 +78,11 @@ public class TodoController {
     @RequestMapping(value = "/logout")
     public String logout(){
         return "login";
+    }
+
+    private String getLoggedInUserName(ModelMap model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 
 

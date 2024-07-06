@@ -24,7 +24,8 @@ public class TodoService {
     }
 
     public List<Todo> getByUserName(String username){
-        return todoList;
+        Predicate<? super Todo> predicate = todo -> todo.getUsername().equals(username);
+        return todoList.stream().filter(predicate).toList();
     }
 
     public void addTodo(String username, String description, LocalDate date, boolean isDone){
