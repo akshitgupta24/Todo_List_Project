@@ -1,7 +1,6 @@
 package com.example.todoList.controller;
 
-import com.example.todoList.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,8 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("name")
 public class WelcomeController {
 
-    @Autowired
-    AuthenticationService authenticationService;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String gotoLoginPage(ModelMap modelMap) {
