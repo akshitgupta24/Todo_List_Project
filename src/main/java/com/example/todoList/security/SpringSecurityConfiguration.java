@@ -21,8 +21,8 @@ public class SpringSecurityConfiguration {
     @Bean
     public InMemoryUserDetailsManager createUserDetailsManager(){
 
-        UserDetails userDetails1 = getUserDetails("akshit", "s");
-        UserDetails userDetails2 = getUserDetails("admin", "s");
+        UserDetails userDetails1 = getUserDetails("root", "root");
+        UserDetails userDetails2 = getUserDetails("user", "password");
         return new InMemoryUserDetailsManager(userDetails1, userDetails2);
     }
 
@@ -31,7 +31,6 @@ public class SpringSecurityConfiguration {
         UserDetails userDetails = User.builder().passwordEncoder(passwordEncoder)
                 .username(username)
                 .password(password)
-                .roles("USER", "ADMIN")
                 .build();
         return userDetails;
     }
@@ -50,7 +49,7 @@ public class SpringSecurityConfiguration {
 
         http.csrf(AbstractHttpConfigurer::disable);
 
-        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)); // Starting from SB 3.1.x
+        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
         return http.build();
     }
