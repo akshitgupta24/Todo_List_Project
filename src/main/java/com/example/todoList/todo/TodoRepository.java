@@ -8,5 +8,4 @@ public interface TodoRepository extends JpaRepository<Todo, Integer> {
 
     List<Todo> findByUsername(String username);
 
-    //Todo updateById(int id);
 }
